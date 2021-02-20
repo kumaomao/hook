@@ -8,10 +8,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 class Hook
 {
 
-    public static function add($hook,$params = null,$once = false){
+    public static function add($hook){
         $result = ApplicationContext::getContainer()
             ->get(EventDispatcherInterface::class)
-            ->dispatch(new HookAction($hook,$params,$once));
+            ->dispatch(new HookAction($hook));
         return $result;
     }
 }

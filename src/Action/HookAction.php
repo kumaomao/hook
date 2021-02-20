@@ -7,9 +7,11 @@ use Kumaomao\Hook\Annotations\Hook;
 
 class HookAction
 {
-    public $result;
+    private $result = false;
+
+    private $isTrue = true;
     
-    public function __construct($hook,$params,$once)
+    public function __construct($hook)
     {
         $hook_list = AnnotationCollector::getMethodsByAnnotation("Kumaomao\Hook\Annotations\Hook");
         $method = [];
@@ -27,9 +29,21 @@ class HookAction
               'method' => $method['method']
           ];
       }else{
-          $this->result = false;
+          $this->isTrue = false;
       }
 
+    }
+
+    public function isTrue(){
+        return $this->isTrue;
+    }
+
+    public function run($params = null){
+        if($this->result){
+            $function  = $this->result['method'];
+            return (new $this->result['class'])->$function($params);
+        }
+       return false;
     }
 
 
